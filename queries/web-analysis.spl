@@ -1,0 +1,14 @@
+# Web analysis
+index="test" sourcetype="access_combined_wcookie"
+
+# Top client IPs
+index="test" sourcetype="access_combined_wcookie" | stats count by clientip | sort - count
+
+# HTTP status codes
+index="test" sourcetype="access_combined_wcookie" | stats count by status
+
+# 404 requests by client
+index="test" sourcetype="access_combined_wcookie" status=404 | stats count by clientip | sort - count
+
+# Possible web scanning
+index="test" sourcetype="access_combined_wcookie" status=404 | stats count dc(uri) as unique_urls by clientip | where count > 20 | sort - count
